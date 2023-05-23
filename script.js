@@ -1,7 +1,9 @@
 const numberText = JSON.parse(document.querySelector("#numberTextContent").textContent);
 
-let minValue = parseInt(prompt("Минимальное знание числа для игры", "0") || "0") || 0;
-let maxValue = parseInt(prompt("Максимальное знание числа для игры", "100") || "100") || 100;
+let minValue;
+let maxValue;
+
+requestMinMax();
 
 const btns = {
     retry: document.querySelector("#btnRetry"),
@@ -12,20 +14,26 @@ const btns = {
 
 alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
 
-let answerNumber = Math.floor((minValue + maxValue) / 2);
+let answerNumber;
+setAnswerNumber();
+
 let orderNumber = 1;
 let gameRun = true;
 
 const orderNumberField = document.querySelector("#orderNumberField");
 const answerField = document.querySelector("#answerField");
 
-orderNumberField.innerText = orderNumber;
-answerField.innerText = `Вы загадали число ${numberToText(answerNumber)}?`;
+displayContents();
 
-btns.retry.addEventListener("click", function() {
-    minValue = 0;
-    maxValue = 100;
-    orderNumber = 0;
+btns.retry.addEventListener("click", () => {
+    // request min&max
+    requestMinMax();
+    // minValue = 0;
+    // maxValue = 100;
+    orderNumber = 1;
+    setAnswerNumber();
+    displayContents();
+    gameRun = true;
 });
 
 btns.less.addEventListener("click", () => {
@@ -36,16 +44,16 @@ btns.less.addEventListener("click", () => {
                 `Вы загадали неправильное число!\n\u{1F914}` :
                 `Я сдаюсь..\n\u{1F92F}`;
 
-            answerField.innerText = answerPhrase;
-            gameRun = false;
+            answerField.textContent = answerPhrase;
+            setNotGameRun();
         } else {
-            maxValue = answerNumber + 1;
+            maxValue = answerNumber - 1;
             answerNumber = Math.floor((minValue + maxValue) / 2);
             const answerNumberText = numberToText(answerNumber);
             orderNumber++;
 
-            orderNumberField.innerText = orderNumber;
-            answerField.innerText = `Вы загадали число ${answerNumberText}?`;
+            orderNumberField.textContent = orderNumber;
+            answerField.textContent = `Вы загадали число ${answerNumberText}?`;
         }
     }
 });
@@ -58,24 +66,23 @@ btns.over.addEventListener("click", () => {
                 `Вы загадали неправильное число!\n\u{1F914}` :
                 `Я сдаюсь..\n\u{1F92F}`;
 
-            answerField.innerText = answerPhrase;
-            gameRun = false;
+            answerField.textContent = answerPhrase;
+            setNotGameRun();
         } else {
             minValue = answerNumber + 1;
-            answerNumber = Math.floor((minValue + maxValue) / 2);
+            setAnswerNumber();
             const answerNumberText = numberToText(answerNumber);
             orderNumber++;
 
-            orderNumberField.innerText = orderNumber;
-            answerField.innerText = `Вы загадали число ${answerNumberText}?`;
+            displayContents();
         }
     }
 });
 
 btns.equal.addEventListener("click", function () {
     if (gameRun) {
-        answerField.innerText = `Я всегда угадываю\n\u{1F60E}`;
-        gameRun = false;
+        answerField.textContent = `Я всегда угадываю\n\u{1F60E}`;
+        setNotGameRun();
     }
 });
 
@@ -129,4 +136,23 @@ function numberToText(n) {
 	}
 
 	return stringDigit || originalN;
+}
+
+function setAnswerNumber() {
+    answerNumber = Math.floor((minValue + maxValue) / 2);
+}
+
+function requestMinMax() {
+    minValue = parseInt(prompt("Минимальное знание числа для игры", "0") || "0") || 0;
+    maxValue = parseInt(prompt("Максимальное знание числа для игры", "100") || "100") || 100;
+    alert("You saw an expression");
+}
+
+function displayContents() {
+    orderNumberField.textContent = orderNumber;
+    answerField.textContent = `Вы загадали число ${numberToText(answerNumber)}?`;
+}
+
+function setNotGameRun() {
+    gameRun = false;
 }
