@@ -29,8 +29,8 @@
 .apcmodal-outer .apcmodal {
 	position: relative;
 	z-index: 2;
-	width: 20vw;
-	height: 10vw;
+	width: 384px;
+	height: 192px;
 	background: #d4d4d4;
 	padding: 2vw;
 	padding-bottom: 5px;
