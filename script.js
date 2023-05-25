@@ -81,7 +81,11 @@ document.addEventListener("keyup", (event) => {
 
 btns.less.addEventListener("click", () => {
     if (gameRun) {
-        if (minValue === maxValue) {
+        if (minValue === maxValue ||
+            minValue - 1 === maxValue ||
+            minValue === maxValue - 1 ||
+            minValue + 1 === maxValue ||
+            minValue === maxValue + 1) {
             gameOver();
         } else {
             maxValue = answerNumber - 1;
@@ -96,7 +100,11 @@ btns.less.addEventListener("click", () => {
 
 btns.over.addEventListener("click", () => {
     if (gameRun) {
-        if (minValue === maxValue) {
+        if (minValue === maxValue ||
+            minValue - 1 === maxValue ||
+            minValue === maxValue - 1 ||
+            minValue + 1 === maxValue ||
+            minValue === maxValue + 1) {
             gameOver();
         } else {
             minValue = answerNumber + 1;
