@@ -207,7 +207,7 @@ async function requestMinMax() {
 
 function displayContents() {
     orderNumberField.textContent = orderNumber;
-    answerField.textContent = answerNumberPhrases[Math.round(Math.random() * answerNumberPhrases.length)].replace("$number$", numberToText(answerNumber)) || answerNumberPhrases[2];
+    answerField.textContent = answerNumberPhrases[Math.round(Math.random() * answerNumberPhrases.length)]?.replace("$number$", numberToText(answerNumber)) || answerNumberPhrases[2];
     // answerField.textContent = `Вы загадали число ${numberToText(answerNumber)}?`;
 }
 
