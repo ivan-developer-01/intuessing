@@ -1,9 +1,10 @@
+(async () => {
 const numberText = JSON.parse(document.querySelector("#numberTextContent").textContent);
 
 let minValue;
 let maxValue;
 
-requestMinMax();
+await requestMinMax();
 
 const btns = {
     retry: document.querySelector("#btnRetry"),
@@ -11,8 +12,6 @@ const btns = {
     over: document.querySelector("#btnOver"),
     equal: document.querySelector("#btnEqual")
 };
-
-alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
 
 let answerNumber;
 setAnswerNumber();
@@ -25,9 +24,9 @@ const answerField = document.querySelector("#answerField");
 
 displayContents();
 
-btns.retry.addEventListener("click", () => {
+btns.retry.addEventListener("click", async () => {
     // request min&max
-    requestMinMax();
+    await requestMinMax();
     // minValue = 0;
     // maxValue = 100;
     orderNumber = 1;
@@ -142,10 +141,19 @@ function setAnswerNumber() {
     answerNumber = Math.floor((minValue + maxValue) / 2);
 }
 
-function requestMinMax() {
-    minValue = parseInt(prompt("Минимальное знание числа для игры", "0") || "0") || 0;
-    maxValue = parseInt(prompt("Максимальное знание числа для игры", "100") || "100") || 100;
-    alert("You saw an expression");
+async function requestMinMax() {
+    // minValue = parseInt(await libPrompt("Минимальное знание числа для игры", "0") || "0") || 0;
+    await libPrompt("Минимальное знание числа для игры", "0").then(res => {
+        const result = parseInt(res || "0") || 0;
+        minValue = result;
+    });
+    // maxValue = parseInt(await libPrompt("Максимальное знание числа для игры", "100") || "100") || 100;
+    await libPrompt("Максимальное знание числа для игры", "100").then(res => {
+        const result = parseInt(res || "100") || 100;
+        maxValue = result;
+    });
+
+    await libAlert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
 }
 
 function displayContents() {
@@ -156,3 +164,17 @@ function displayContents() {
 function setNotGameRun() {
     gameRun = false;
 }
+
+function libAlert(message = "") {
+    alerts({
+        modalMessage: message
+    });
+}
+
+async function libPrompt(message = "", defaultText = "") {
+    return prompts({
+        modalMessage: message,
+        defaultText: defaultText
+    });
+}
+})();
