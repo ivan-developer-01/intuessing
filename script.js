@@ -82,13 +82,7 @@ document.addEventListener("keyup", (event) => {
 btns.less.addEventListener("click", () => {
     if (gameRun) {
         if (minValue === maxValue) {
-            const phraseRandom = Math.round(Math.random());
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
-
-            answerField.textContent = answerPhrase;
-            setNotGameRun();
+            gameOver();
         } else {
             maxValue = answerNumber - 1;
             answerNumber = Math.floor((minValue + maxValue) / 2);
@@ -103,13 +97,7 @@ btns.less.addEventListener("click", () => {
 btns.over.addEventListener("click", () => {
     if (gameRun) {
         if (minValue === maxValue) {
-            const phraseRandom = Math.round(Math.random());
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали неправильное число!\n\u{1F914}` :
-                `Я сдаюсь..\n\u{1F92F}`;
-
-            answerField.textContent = answerPhrase;
-            setNotGameRun();
+            gameOver();
         } else {
             minValue = answerNumber + 1;
             setAnswerNumber();
@@ -123,7 +111,9 @@ btns.over.addEventListener("click", () => {
 
 btns.equal.addEventListener("click", function () {
     if (gameRun) {
-        answerField.innerHTML = winPhrases[Math.round(Math.random() * (winPhrases.length))]?.replace("$attempts$", orderNumber) || winPhrases[2];
+        answerField.innerHTML = winPhrases[Math.round(Math.random() * (winPhrases.length))]?.replace("$attempts$", orderNumber) ||
+                                winPhrases[2].replace("$attempts$", orderNumber);
+
         setNotGameRun();
     }
 });
@@ -139,8 +129,7 @@ function numberToText(n) {
 		stringDigit += (-n >= -999) ? "минус " : ""; // пробел тут обязателен
 		nStr = nStr.slice(1);
 	}
-
-	// ща как сделаю!
+    
 	if ((n >= 1 && n <= 19) || 
 		(n <= -1 && n >= -19)) {
 		stringDigit += numberText[n];
@@ -207,7 +196,8 @@ async function requestMinMax() {
 
 function displayContents() {
     orderNumberField.textContent = orderNumber;
-    answerField.textContent = answerNumberPhrases[Math.round(Math.random() * answerNumberPhrases.length)]?.replace("$number$", numberToText(answerNumber)) || answerNumberPhrases[2];
+    answerField.textContent = answerNumberPhrases[Math.round(Math.random() * answerNumberPhrases.length)]?.replace("$number$", numberToText(answerNumber)) ||
+                                            answerNumberPhrases[2].replace("$number$", numberToText(answerNumber));
     // answerField.textContent = `Вы загадали число ${numberToText(answerNumber)}?`;
 }
 
@@ -232,5 +222,15 @@ function wait(ms) {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
+}
+
+function gameOver() {
+    const phraseRandom = Math.round(Math.random());
+    const answerPhrase = (phraseRandom === 1) ?
+        `Вы загадали неправильное число!\n\u{1F914}` :
+        `Я сдаюсь..\n\u{1F92F}`;
+
+    answerField.textContent = answerPhrase;
+    setNotGameRun();
 }
 })();
