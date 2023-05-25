@@ -19,6 +19,9 @@ await alerts({
     modalMessage: greetings
 });
 
+const answerNumberPhrases = ["Вы загадали число $number$?", "Мне подсказывает, что вы загадали число $number$.", "Я знаю, что это число $number$!", "А у вас тут число $number$?"];
+const winPhrases = ["Я всегда угадываю<br>\u{1F60E}", "Это так легко!<br>\u{1F60E}", "Вот видите, я угадал ваше число за $attempts$ попыток(-ки)!", "Сила бинарного поиска<br>😉"];
+
 const numberText = JSON.parse(document.querySelector("#numberTextContent").textContent);
 
 let minValue;
@@ -120,7 +123,7 @@ btns.over.addEventListener("click", () => {
 
 btns.equal.addEventListener("click", function () {
     if (gameRun) {
-        answerField.textContent = `Я всегда угадываю\n\u{1F60E}`;
+        answerField.innerHTML = winPhrases[Math.round(Math.random() * (winPhrases.length))]?.replace("$attempts$", orderNumber) || winPhrases[2];
         setNotGameRun();
     }
 });
@@ -171,7 +174,7 @@ function numberToText(n) {
 	let strDigitLength = stringDigit.length;
 
 	if (strDigitLength >= 21) {
-		stringDigit = n;
+		stringDigit = originalN;
 	}
 
 	return stringDigit || originalN;
@@ -187,18 +190,25 @@ async function requestMinMax() {
         const result = parseInt(res || "0") || 0;
         minValue = result;
     });
+    await wait(2); // fixes the problem with the Esc key
     // maxValue = parseInt(await libPrompt("Максимальное знание числа для игры", "100") || "100") || 100;
     await libPrompt("Максимальное знание числа для игры", "100").then(res => {
         const result = parseInt(res || "100") || 100;
         maxValue = result;
     });
 
-    await libAlert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
+    minValue = (minValue < -999) ? -999 : minValue;
+    maxValue = (maxValue > 999) ? 999 : maxValue;
+
+    await wait(2); // fixes the problem with the Esc key again
+
+    libAlert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
 }
 
 function displayContents() {
     orderNumberField.textContent = orderNumber;
-    answerField.textContent = `Вы загадали число ${numberToText(answerNumber)}?`;
+    answerField.textContent = answerNumberPhrases[Math.round(Math.random() * answerNumberPhrases.length)].replace("$number$", numberToText(answerNumber)) || answerNumberPhrases[2];
+    // answerField.textContent = `Вы загадали число ${numberToText(answerNumber)}?`;
 }
 
 function setNotGameRun() {
@@ -215,6 +225,12 @@ async function libPrompt(message = "", defaultText = "") {
     return prompts({
         modalMessage: message,
         defaultText: defaultText
+    });
+}
+
+function wait(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
     });
 }
 })();
