@@ -83,7 +83,7 @@ function prompts({ modalMessage = "Введите текст:",
 			}
 		});
 
-		modalInput.focus();
+		modalInput.select();
 	});
 }
 
