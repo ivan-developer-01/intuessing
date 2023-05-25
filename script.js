@@ -179,7 +179,9 @@ async function requestMinMax() {
         const result = parseInt(res || "0") || 0;
         minValue = result;
     });
+    addOverlay();
     await wait(2); // fixes the problem with the Esc key
+    removeOverlay();
     // maxValue = parseInt(await libPrompt("Максимальное знание числа для игры", "100") || "100") || 100;
     await libPrompt("Максимальное знание числа для игры", "100").then(res => {
         const result = parseInt(res || "100") || 100;
@@ -189,7 +191,9 @@ async function requestMinMax() {
     minValue = (minValue < -999) ? -999 : minValue;
     maxValue = (maxValue > 999) ? 999 : maxValue;
 
-    await wait(2); // fixes the problem with the Esc key again
+    addOverlay();
+    await wait(2); // fixes the problem with the Esc key
+    removeOverlay();
 
     libAlert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю`);
 }
@@ -232,5 +236,17 @@ function gameOver() {
 
     answerField.textContent = answerPhrase;
     setNotGameRun();
+}
+
+function addOverlay() {
+    const overlay = document.createElement("div");
+    overlay.style.cssText = "position:fixed;top:0;right:0;overflow:hidden;height:100vh;width:100vw;z-index:9999;background:transparent;";
+    overlay.classList.add("overlay-HVefyhg");
+
+    document.body.appendChild(overlay);
+}
+
+function removeOverlay() {
+    document.querySelector(".overlay-HVefyhg").remove();
 }
 })();
