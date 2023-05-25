@@ -48,20 +48,21 @@ function prompts({ modalMessage = "Введите текст:",
 
 	document.body.appendChild(modalOuter);
 
-	function keyEsc(event) {
-		if (event.key === "Escape") {
-			remove();
-		}
-	}
-
-	window.addEventListener("keydown", keyEsc);
-
-	function remove() {
-		modalOuter.remove();
-		window.removeEventListener("keydown", keyEsc);
-	}
-
 	return new Promise((resolve, reject) => {
+		function keyEsc(event) {
+			if (event.key === "Escape") {
+				remove();
+				resolve();
+			}
+		}
+	
+		window.addEventListener("keyup", keyEsc);
+	
+		function remove() {
+			modalOuter.remove();
+			window.removeEventListener("keyup", keyEsc);
+		}
+
 		modalCancelBtn.addEventListener("click", () => {
 			resolve(null);
 			remove();
@@ -137,10 +138,10 @@ function alerts({ modalMessage = "",
 
 		function remove() {
 			modalOuter.remove();
-			window.removeEventListener("keydown", keyEsc);
+			window.removeEventListener("keyup", keyEsc);
 		}
 	
-		window.addEventListener("keydown", keyEsc);
+		window.addEventListener("keyup", keyEsc);
 
 		modalCloseBtn.addEventListener("click", () => {
 			resolve();
@@ -205,11 +206,11 @@ function confirms({ modalMessage = "Вы уверены?",
 		}
 	}
 
-	window.addEventListener("keydown", keyEsc);
+	window.addEventListener("keyup", keyEsc);
 
 	function remove() {
 		modalOuter.remove();
-		window.removeEventListener("keydown", keyEsc);
+		window.removeEventListener("keyup", keyEsc);
 	}
 
 	return new Promise((resolve, reject) => {
@@ -230,7 +231,7 @@ function confirms({ modalMessage = "Вы уверены?",
 			}
 		}
 	
-		window.addEventListener("keydown", keyEsc);
+		window.addEventListener("keyup", keyEsc);
 
 		modalSubmitBtn.focus();
 	});
