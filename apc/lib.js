@@ -52,7 +52,7 @@ function prompts({ modalMessage = "Введите текст:",
 		function keyEsc(event) {
 			if (event.key === "Escape") {
 				remove();
-				resolve();
+				resolve(null);
 			}
 		}
 	
