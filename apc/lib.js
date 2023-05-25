@@ -127,20 +127,21 @@ function alerts({ modalMessage = "",
 
 	document.body.appendChild(modalOuter);
 
-	function keyEsc(event) {
-		if (event.key === "Escape" || event.key === "Enter") {
-			remove();
-		}
-	}
-
-	window.addEventListener("keydown", keyEsc);
-
-	function remove() {
-		modalOuter.remove();
-		window.removeEventListener("keydown", keyEsc);
-	}
-
 	return new Promise((resolve, reject) => {
+		function keyEsc(event) {
+			if (event.key === "Escape" || event.key === "Enter") {
+				remove();
+				resolve();
+			}
+		}
+
+		function remove() {
+			modalOuter.remove();
+			window.removeEventListener("keydown", keyEsc);
+		}
+	
+		window.addEventListener("keydown", keyEsc);
+
 		modalCloseBtn.addEventListener("click", () => {
 			resolve();
 			remove();
@@ -151,7 +152,8 @@ function alerts({ modalMessage = "",
 			remove();
 		});
 
-		modalSubmitBtn.focus();
+		if (modalMessage.length < 300) modalSubmitBtn.focus();
+		else modalElem.classList.add("apcmodal-expanded");
 	});
 }
 

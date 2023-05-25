@@ -1,4 +1,24 @@
 (async () => {
+const greetings = `Добро пожаловать в Угадайку! 😎<br><br>
+Здесь вам нужно загадать число в голове, а потом компьютер постарается угадать ваше число, за не более чем 20 шагов! 🫡<br><br>
+
+Поддерживается управление клавишами. Вот список доступных клавиш:<br>
+
+<ul>
+    <li>M/Ь, O/Щ, стрелка вверх — Загаданное число больше числа компьютера</li>
+    <li>L/Д, стрелка вниз — Загаданное число больше числа компьютера</li>
+    <li>E/У, C/С, стрелка вправо — Загаданное число равняется числу компьютера</li>
+    <li>R/К, стрелка влево — Перезапустить игру (только когда игра закончена)</li>
+</ul>
+
+Клавиши указываются в формате англБуква/русБуква, или, если это клавиши, то текстом. Клавиши нечувствительны к регистру. 😐<br><br>
+
+Походу игры вы, возможно, поймёте лучше. Удачи! 😉`;
+
+await alerts({
+    modalMessage: greetings
+});
+
 const numberText = JSON.parse(document.querySelector("#numberTextContent").textContent);
 
 let minValue;
@@ -25,6 +45,8 @@ const answerField = document.querySelector("#answerField");
 displayContents();
 
 btns.retry.addEventListener("click", async () => {
+    //             если уже существует какой-то диалог, то зачем его вызывать снова?
+    if (gameRun || document.querySelector(".modal-outer")) return;
     // request min&max
     await requestMinMax();
     // minValue = 0;
@@ -33,6 +55,25 @@ btns.retry.addEventListener("click", async () => {
     setAnswerNumber();
     displayContents();
     gameRun = true;
+});
+
+// управление с клавиатуры
+document.addEventListener("keyup", (event) => {
+    let key = event.key.toUpperCase();
+
+    if (key === "M" || key === "Ь" ||
+        key === "O" || key === "Щ" ||
+        key === "ARROWUP") btns.over.click();
+
+    if (key === "L" || key === "Д" ||
+        key === "ARROWDOWN") btns.less.click();
+
+    if (key === "E" || key === "У" ||
+        key === "C" || key === "С" ||
+        key === "ARROWRIGHT") btns.equal.click();
+
+    if (key === "R" || key === "К" ||
+        key === "ARROWLEFT") btns.retry.click();
 });
 
 btns.less.addEventListener("click", () => {
@@ -51,8 +92,7 @@ btns.less.addEventListener("click", () => {
             const answerNumberText = numberToText(answerNumber);
             orderNumber++;
 
-            orderNumberField.textContent = orderNumber;
-            answerField.textContent = `Вы загадали число ${answerNumberText}?`;
+            displayContents();
         }
     }
 });

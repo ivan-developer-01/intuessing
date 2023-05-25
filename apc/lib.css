@@ -39,6 +39,11 @@
 	overflow: auto;
 }
 
+.apcmodal-outer .apcmodal.apcmodal-expanded {
+	width: 40vw;
+	height: 25vw;
+}
+
 .apcmodal-outer .apcmodal-alert,
 .apcmodal-outer .apcmodal-confirm {
 	height: 12vw;
