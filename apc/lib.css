@@ -1,0 +1,134 @@
+.apcmodal-outer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.apcmodal-outer *,
+.apcmodal-outer ::after,
+.apcmodal-outer ::before {
+    box-sizing: content-box;
+}
+
+.apcmodal-outer,
+.apcmodal-bg {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.apcmodal-bg {
+	background: rgba(43, 43, 43, 0.9);
+	opacity: 1;
+	z-index: 1;
+}
+
+.apcmodal-outer .apcmodal {
+	position: relative;
+	z-index: 2;
+	width: 20vw;
+	height: 10vw;
+	background: #d4d4d4;
+	padding: 2vw;
+	padding-bottom: 5px;
+	border-radius: 5px;
+	border: 1px solid gray;
+	overflow: auto;
+}
+
+.apcmodal-outer .apcmodal-alert,
+.apcmodal-outer .apcmodal-confirm {
+	height: 12vw;
+}
+
+.apcmodal-outer .apcmodal-close-button {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	bottom: 20px;
+	float: right;
+	/* left: 364px; */
+	width: 30px;
+	height: 30px;
+	border: 1px solid black;
+	border-radius: 50%;
+	background: #fcfcfc;
+	cursor: pointer;
+	user-select: none;
+}
+
+.apcmodal-outer .apcmodal-close-button:hover {
+	background: #dadada;
+}
+
+.apcmodal-outer .apcmodal-close-button:active {
+	background: #FF5555;
+}
+
+/* .apcmodal-outer .apcmodal .apcmodal-message {
+	overflow: scroll;
+} */
+
+.apcmodal-outer .apcmodal .apcmodal-btn-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 2vw;
+}
+
+.apcmodal-outer .apcmodal .apcmodal-btn {
+	/* position: fixed; */
+	/* top: 18.2vw; */
+	/* right: 38.8vw; */
+	direction: rtl;
+	width: 8.8vw;
+	height: 2.6vw;
+	appearance: none;
+	border: 1px solid gray;
+	border-radius: 10px;
+	font-size: 15px;
+	overflow: hidden;
+}
+
+.apcmodal-outer .apcmodal .apcmodal-btn:hover {
+	background: rgb(216, 216, 216);
+}
+
+.apcmodal-outer .apcmodal .apcmodal-btn:active {
+	background: rgb(200, 200, 200);
+}
+
+.apcmodal-outer .apcmodal.apcmodal-alert .apcmodal-btn {
+	width: 100%;
+}
+
+.apcmodal-outer .apcmodal .apcmodal-cancel-btn {
+	border: 1px solid rgb(200, 0, 0);
+}
+
+.apcmodal-outer .apcmodal .apcmodal-submit-btn {
+	border: 1px solid green;
+}
+
+.apcmodal-outer .apcmodal .apcmodal-input {
+	width: 92%;
+	margin: 0.2vw;
+	appearance: none;
+	border: 2px solid;
+	border-color: gray;
+	border-radius: 10px;
+	height: 1vw;
+	padding: 0.5vw;
+	transition: border-color 30ms;
+}
+
+.apcmodal-outer .apcmodal .apcmodal-input:focus,
+.apcmodal-outer .apcmodal .apcmodal-input:active {
+	transition: border-color 30ms;
+	border-color: blue;
+	border-width: 2px;
+}
